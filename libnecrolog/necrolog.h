@@ -128,10 +128,12 @@ private:
 #else
 #define nCDebug(topic) for(bool necrolog__en__ = NecroLog::shouldLog(NecroLog::Level::Debug, NecroLog::LogContext(__FILE__, __LINE__, topic)); necrolog__en__; necrolog__en__ = false) NecroLog::create(NecroLog::Level::Debug, NecroLog::LogContext(__FILE__, __LINE__, topic))
 #endif
-#define nCInfo(topic) for(bool necrolog__en__ = NecroLog::shouldLog(NecroLog::Level::Info, NecroLog::LogContext(__FILE__, __LINE__, topic)); necrolog__en__; necrolog__en__ = false) NecroLog::create(NecroLog::Level::Info, NecroLog::LogContext(__FILE__, __LINE__, topic))
-#define nCMessage(topic) for(bool necrolog__en__ = NecroLog::shouldLog(NecroLog::Level::Message, NecroLog::LogContext(__FILE__, __LINE__, topic)); necrolog__en__; necrolog__en__ = false) NecroLog::create(NecroLog::Level::Message, NecroLog::LogContext(__FILE__, __LINE__, topic))
-#define nCWarning(topic) for(bool necrolog__en__ = NecroLog::shouldLog(NecroLog::Level::Warning, NecroLog::LogContext(__FILE__, __LINE__, topic)); necrolog__en__; necrolog__en__ = false) NecroLog::create(NecroLog::Level::Warning, NecroLog::LogContext(__FILE__, __LINE__, topic))
-#define nCError(topic) for(bool necrolog__en__ = NecroLog::shouldLog(NecroLog::Level::Error, NecroLog::LogContext(__FILE__, __LINE__, topic)); necrolog__en__; necrolog__en__ = false) NecroLog::create(NecroLog::Level::Error, NecroLog::LogContext(__FILE__, __LINE__, topic))
+
+#define NECROLOG_IMPL_LOG_MACRO(level, topic) !NecroLog::shouldLog(NecroLog::Level::level, NecroLog::LogContext(__FILE__, __LINE__, topic)) ? NecroLog::create(NecroLog::Level::level, NecroLog::LogContext(__FILE__, __LINE__, topic)) : NecroLog::create(NecroLog::Level::level, NecroLog::LogContext(__FILE__, __LINE__, topic))
+#define nCInfo(topic) NECROLOG_IMPL_LOG_MACRO(Info, topic)
+#define nCMessage(topic) NECROLOG_IMPL_LOG_MACRO(Message, topic)
+#define nCWarning(topic) NECROLOG_IMPL_LOG_MACRO(Warning, topic)
+#define nCError(topic) NECROLOG_IMPL_LOG_MACRO(Error, topic)
 
 #define nDebug() nCDebug("")
 #define nMessage() nCMessage("")
