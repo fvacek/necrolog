@@ -69,13 +69,8 @@ public:
 	static std::vector<std::string> setCLIOptions(int argc, char *argv[]);
 	static std::vector<std::string> setCLIOptions(const std::vector<std::string> &params);
 	static std::string thresholdsLogInfo();
-	[[deprecated]] static std::string tresholdsLogInfo() {return thresholdsLogInfo();}
 	static std::string topicsLogThresholds();
-	[[deprecated]] static std::string topicsLogTresholds() { return topicsLogThresholds(); }
 	static void setTopicsLogThresholds(const std::string &thresholds);
-	[[deprecated]] static void setTopicsLogTresholds(const std::string &thresholds) { setTopicsLogThresholds(thresholds); }
-	//static std::string fileLogTresholds();
-	//static void setFileLogTresholds(const std::string &tresholds);
 	static void registerTopic(const std::string &topic, const std::string &info);
 	static std::string registeredTopicsInfo();
 	static const char * cliHelp();
