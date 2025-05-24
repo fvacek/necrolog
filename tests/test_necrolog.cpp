@@ -14,7 +14,7 @@
 
 using namespace std;
 
-void log_case(const string &args, const map<const char*, NecroLogLevel> &expected_levels)
+static void log_case(const string &args, const map<const char*, NecroLogLevel> &expected_levels)
 {
 	istringstream iss(args);
 	vector<string> params{istream_iterator<string>{iss}, istream_iterator<string>{}};
@@ -37,7 +37,7 @@ void log_case(const string &args, const map<const char*, NecroLogLevel> &expecte
 	}
 }
 
-tuple<string, map<const char*, NecroLogLevel>> make_args(const string &args, const map<const char*, NecroLogLevel> &expected_levels)
+static tuple<string, map<const char*, NecroLogLevel>> make_args(const string &args, const map<const char*, NecroLogLevel> &expected_levels)
 {
 	return make_tuple(args, expected_levels);
 }

@@ -15,11 +15,11 @@ class NECROLOG_DECL_EXPORT NecroLog
 	friend class NecroLogSharedData;
 public:
 	using Level = NecroLogLevel;
-	enum class Color : int8_t {Default = -1, Black=0, Red, Green, Brown, Blue, Magenta, Cyan, LightGray, Gray, LightRed, LightGreen, Yellow, LightBlue, LightMagenta, LightCyan, White};
+	enum class Color : int8_t {Default = -1, Black, Red, Green, Brown, Blue, Magenta, Cyan, LightGray, Gray, LightRed, LightGreen, Yellow, LightBlue, LightMagenta, LightCyan, White};
 	class NECROLOG_DECL_EXPORT LogContext
 	{
 	public:
-		LogContext() : m_file(nullptr), m_line(0) {}
+		LogContext() = default;
 		LogContext(const char *file_name, int line_number, const char *topic)
 			: m_topic(topic), m_file(file_name), m_line(line_number) {}
 

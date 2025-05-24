@@ -3,7 +3,6 @@
 #include <array>
 #include <ctime>
 #include <algorithm>
-#include <array>
 #include <filesystem>
 #include <iostream>
 #include <utility>
@@ -222,6 +221,7 @@ NecroLog::Level NecroLog::stringToLevel(const char *str)
 			case 'E': return NecroLog::Level::Error;
 			case 'f':
 			case 'F': return NecroLog::Level::Fatal;
+			default: return NecroLog::Level::Invalid;
 		}
 	}
 	return NecroLog::Level::Invalid;
