@@ -3,6 +3,7 @@
 #include "necrologglobal.h"
 #include "necrologlevel.h"
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include <map>
