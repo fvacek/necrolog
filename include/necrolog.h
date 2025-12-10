@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libnecrolog_export.h"
-#include "necrologlevel.h"
+#include <necrolog/libnecrolog_export.h>
+#include <necrolog/necrologlevel.h>
 
 #include <cstdint>
 #include <vector>
