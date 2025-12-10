@@ -25,7 +25,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU
 endif()
 
 add_library(libnecrolog)
-generate_export_header(libnecrolog)
+generate_export_header(libnecrolog EXPORT_FILE_NAME necrolog/libnecrolog_export.h)
 
 target_sources(
 	libnecrolog
@@ -35,12 +35,12 @@ target_sources(
 			BASE_DIRS include
 			FILES
 				include/necrolog.h
-				include/necrologlevel.h
+				include/necrolog/necrologlevel.h
 		FILE_SET generated_headers
 			TYPE HEADERS
 			FILES
 			BASE_DIRS $<TARGET_PROPERTY:libnecrolog,BINARY_DIR>
-			FILES "${CMAKE_CURRENT_BINARY_DIR}/libnecrolog_export.h"
+			FILES "${CMAKE_CURRENT_BINARY_DIR}/necrolog/libnecrolog_export.h"
 
 )
 
