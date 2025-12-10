@@ -11,7 +11,7 @@ runs:
     # Linux deps
     - name: Install/cache clazy, and doctest
       if: runner.os != 'Windows'
-      uses: awalsh128/cache-apt-pkgs-action@v1.3.0
+      uses: awalsh128/cache-apt-pkgs-action@v1.6.0
       with:
         packages: doctest-dev clazy
         version: 1.0
