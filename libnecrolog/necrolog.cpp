@@ -1,4 +1,4 @@
-#include "necrolog.h"
+#include <necrolog.h>
 
 #include <array>
 #include <ctime>

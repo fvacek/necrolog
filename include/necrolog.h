@@ -1,6 +1,6 @@
 #pragma once
 
-#include "necrologglobal.h"
+#include "libnecrolog_export.h"
 #include "necrologlevel.h"
 
 #include <cstdint>
@@ -11,13 +11,13 @@
 #include <sstream>
 #include <functional>
 
-class NECROLOG_DECL_EXPORT NecroLog
+class LIBNECROLOG_EXPORT NecroLog
 {
 	friend class NecroLogSharedData;
 public:
 	using Level = NecroLogLevel;
 	enum class Color : int8_t {Default = -1, Black, Red, Green, Brown, Blue, Magenta, Cyan, LightGray, Gray, LightRed, LightGreen, Yellow, LightBlue, LightMagenta, LightCyan, White};
-	class NECROLOG_DECL_EXPORT LogContext
+	class LIBNECROLOG_EXPORT LogContext
 	{
 	public:
 		LogContext() = default;
@@ -93,7 +93,7 @@ private:
 	static Options& globalOptions();
 	static int moduleNameStart(const char *file_name);
 private:
-	class NECROLOG_DECL_EXPORT NecroLogSharedData {
+	class LIBNECROLOG_EXPORT NecroLogSharedData {
 		friend class NecroLog;
 	public:
 		NecroLogSharedData(NecroLog::Level level, const LogContext& log_context);

@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(CTest)
+include(GenerateExportHeader)
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "") # we don't want CMake to prepend "lib" to our libraries, we prefer adding that ourselves
 
@@ -22,19 +23,27 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU
 	set(CMAKE_CXX_FLAGS "${NECROLOG_WARNING_FLAGS} ${CMAKE_CXX_FLAGS}")
 endif()
 
-add_library(libnecrolog
-	libnecrolog/necrolog.cpp
-	libnecrolog/necrolog.h
-	libnecrolog/necrologlevel.h
+add_library(libnecrolog)
+generate_export_header(libnecrolog)
+
+target_sources(
+	libnecrolog
+	PRIVATE libnecrolog/necrolog.cpp
+	PUBLIC
+		FILE_SET HEADERS
+			BASE_DIRS include
+			FILES
+				include/necrolog.h
+				include/necrologlevel.h
+		FILE_SET generated_headers
+			TYPE HEADERS
+			FILES
+			BASE_DIRS $<TARGET_PROPERTY:libnecrolog,BINARY_DIR>
+			FILES "${CMAKE_CURRENT_BINARY_DIR}/libnecrolog_export.h"
+
 )
+
 add_library(libnecrolog::libnecrolog ALIAS libnecrolog)
-
-target_include_directories(libnecrolog PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libnecrolog>
-	$<INSTALL_INTERFACE:include>
-	)
-
-target_compile_definitions(libnecrolog PRIVATE NECROLOG_BUILD_DLL)
 
 if(WITH_EXAMPLES)
 	add_executable(log_example examples/log_example.cpp)
@@ -53,7 +62,6 @@ endif()
 if(BUILD_TESTING)
 	add_executable(test_necrolog tests/test_necrolog.cpp)
 	add_test(NAME test_necrolog COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:test_necrolog>)
-	target_include_directories(test_necrolog PRIVATE libnecrolog)
 	target_link_libraries(test_necrolog PRIVATE libnecrolog doctest::doctest)
 endif()
 
@@ -61,7 +69,7 @@ include(GNUInstallDirs)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/necrolog.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/necrolog.pc" @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/necrolog.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
-install(TARGETS libnecrolog EXPORT necrologConfig)
+install(TARGETS libnecrolog EXPORT necrologConfig FILE_SET HEADERS FILE_SET generated_headers)
 export(TARGETS libnecrolog NAMESPACE libnecrolog:: FILE "${CMAKE_CURRENT_BINARY_DIR}/necrologConfig.cmake")
 install(EXPORT necrologConfig DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/necrolog/cmake" NAMESPACE libnecrolog::)
 
