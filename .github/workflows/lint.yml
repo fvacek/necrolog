@@ -13,13 +13,13 @@ on:
 
 jobs:
   clang-tidy:
-    name: clang-tidy / Ubuntu 22.04
+    name: clang-tidy / Ubuntu
     runs-on: ubuntu-22.04
     env:
       CC: clang-15
       CXX: clang++-15
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Run clang-tidy
         uses: ./.github/actions/run-linter
@@ -27,13 +27,13 @@ jobs:
           lint_program_with_args: clang-tidy-15 --quiet --warnings-as-errors=*
 
   clazy:
-    name: clazy / Ubuntu 22.04
+    name: clazy / Ubuntu
     runs-on: ubuntu-22.04
     env:
       CC: clang-15
       CXX: clang++-15
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Run clazy
         uses: ./.github/actions/run-linter

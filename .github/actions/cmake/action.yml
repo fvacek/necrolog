@@ -29,6 +29,13 @@ runs:
       with:
         key: ${{ github.job }}
 
+    - name: Enable ASAN/UBSAN
+      if: inputs.asan == 'true'
+      run: |
+        echo CFLAGS="-fsanitize=address,undefined ${CFLAGS}" >> "$GITHUB_ENV"
+        echo CXXFLAGS="-fsanitize=address,undefined ${CXXFLAGS}" >> "$GITHUB_ENV"
+      shell: bash
+
     - name: Configure CMake
       run: |
         CFLAGS="-Werror ${CFLAGS}" \

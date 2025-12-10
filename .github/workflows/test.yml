@@ -7,53 +7,37 @@ concurrency:
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
-  ubuntu-qt5:
-    name: Qt 5.15.2 / Ubuntu 22.04
-    runs-on: ubuntu-22.04
-    env:
-      CFLAGS: -fsanitize=address,undefined
-      CXXFLAGS: -fsanitize=address,undefined
+  build-and-test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu
+            os: ubuntu-22.04
+            asan: true
+            additional_cmake_args: ""
+
+          - name: Windows
+            os: windows-2022
+            asan: false
+            additional_cmake_args: >-
+              -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="${{ github.workspace }}/build/bin"
+              -DCMAKE_LIBRARY_OUTPUT_DIRECTORY="${{ github.workspace }}/build/bin"
+
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup CMake
-        uses: ./.github/actions/cmake
-
-      - name: Build and test
-        uses: ./.github/actions/build-and-test
-
-  ubuntu-qt6:
-    name: Qt 6.5.0 / Ubuntu 22.04
-    runs-on: ubuntu-22.04
-    env:
-      CFLAGS: -fsanitize=address,undefined
-      CXXFLAGS: -fsanitize=address,undefined
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup CMake
-        uses: ./.github/actions/cmake
-
-      - name: Build and test
-        uses: ./.github/actions/build-and-test
-
-  windows:
-    name: Qt 6.5.0 / Windows
-    runs-on: windows-2022
-    steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Setup CMake
         uses: ./.github/actions/cmake
         with:
-          additional_cmake_args: |
-            -DCMAKE_RUNTIME_OUTPUT_DIRECTORY='${{github.workspace}}/build/bin' \
-            -DCMAKE_LIBRARY_OUTPUT_DIRECTORY='${{github.workspace}}/build/bin'
+          additional_cmake_args: ${{ matrix.additional_cmake_args }}
 
       - name: Build and test
         uses: ./.github/actions/build-and-test
