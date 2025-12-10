@@ -11,7 +11,7 @@ runs:
     # Linux deps
     - name: Install/cache clazy, and doctest
       if: runner.os != 'Windows'
-      uses: awalsh128/cache-apt-pkgs-action@v1.3.0
+      uses: awalsh128/cache-apt-pkgs-action@v1.6.0
       with:
         packages: doctest-dev clazy
         version: 1.0
@@ -25,9 +25,16 @@ runs:
       shell: bash
 
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.20
       with:
         key: ${{ github.job }}
+
+    - name: Enable ASAN/UBSAN
+      if: inputs.asan == 'true'
+      run: |
+        echo CFLAGS="-fsanitize=address,undefined ${CFLAGS}" >> "$GITHUB_ENV"
+        echo CXXFLAGS="-fsanitize=address,undefined ${CXXFLAGS}" >> "$GITHUB_ENV"
+      shell: bash
 
     - name: Configure CMake
       run: |
